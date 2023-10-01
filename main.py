@@ -1,4 +1,5 @@
 import logging
+import os
 
 from flask import Flask, request
 from apscheduler.schedulers.background import BackgroundScheduler
@@ -13,7 +14,7 @@ scheduler.start()
 
 @app.route('/', methods=['GET'])
 def hello():
-    return "Hello world"
+    return os.environ['MONGODB_URI']
 
 @app.route('/announcements', methods=['POST'])
 def get_announcements():
