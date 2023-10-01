@@ -11,7 +11,11 @@ scheduler = BackgroundScheduler(daemon=False)
 scheduler.add_job(func=Scrapper.collect_data, trigger='interval', hours=24)
 scheduler.start()
 
-@app.route('/', methods=['POST'])
+@app.route('/', methods=['GET'])
+def hello():
+    return "Hello world"
+
+@app.route('/announcements', methods=['POST'])
 def get_announcements():
     return AnnouncementService.get_announcements(request.get_json())
 
