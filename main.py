@@ -17,4 +17,4 @@ def get_announcements():
 
 if __name__ == '__main__':
     app.logger.setLevel(logging.INFO)
-    app.run(debug=True)
+    app.run()
