@@ -8,7 +8,6 @@ from Utils.Database import Database
 def get_url(city):
     return 'https://ogloszenia.trojmiasto.pl/nieruchomosci-mam-do-wynajecia/' + city + '/?strona='
 
-
 def collect_data():
     start = datetime.datetime.now()
     today = datetime.datetime.now().strftime('%Y-%m-%d')

@@ -37,8 +37,8 @@ class AnnouncementService:
         return total / len(result_announcements)
 
     @staticmethod
-    def get_announcements(preferences, is_test):
-        data = Database.get_announcements(test=is_test)
+    def get_announcements(preferences):
+        data = Database.get_announcements()
         result_announcements = []
         result = []
         for record in data.find():
@@ -54,7 +54,7 @@ class AnnouncementService:
                     'Total_announcements': total_announcements,
                     'Result_announcements': len(city_announcements),
                     'Average_rent_price': round(AnnouncementService.get_average_rent_price(city_announcements), 2),
-                    'Average_rent_price_per_m_2': None  # todo
+                    'Average_rent_price_per_m_2': None
                 }
                 result_announcements.append(city_data)
 
