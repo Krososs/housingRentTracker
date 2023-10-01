@@ -17,7 +17,7 @@ def hello():
     return "Hello world"
 
 @app.route('/test', methods=['POST'])
-def get_announcements():
+def test():
     return request.get_json()
 
 @app.route('/announcements', methods=['POST'])
