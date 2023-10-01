@@ -14,7 +14,11 @@ scheduler.start()
 
 @app.route('/', methods=['GET'])
 def hello():
-    return os.environ['MONGODB_URI']
+    return "Hello world"
+
+@app.route('/test', methods=['POST'])
+def get_announcements():
+    return request.get_json()
 
 @app.route('/announcements', methods=['POST'])
 def get_announcements():
