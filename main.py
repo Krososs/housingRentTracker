@@ -1,4 +1,5 @@
 import logging
+import threading
 import os
 import datetime
 
@@ -17,8 +18,9 @@ app = Flask(__name__)
 #     client.HousingRent.Test.insert_one(record)
 
 # scheduler = BackgroundScheduler(daemon=True)
-# #scheduler.add_job(func=scheduler_test, trigger='interval', minutes=2)
+# scheduler.add_job(func=scheduler_test, trigger='interval', minutes=2)
 # scheduler.start()
+# scheduler.
 
 @app.route('/', methods=['GET'])
 def hello():
@@ -26,7 +28,9 @@ def hello():
 
 @app.route('/test', methods=['POST'])
 def test():
-    Scrapper.collect_data()
+    thread = threading.Thread(target=Scrapper.collect_data, daemon=True)
+    # Scrapper.collect_data()
+    thread.start()
     return request.get_json()
 
 @app.route('/announcements', methods=['POST'])
