@@ -11,7 +11,7 @@ app = Flask(__name__)
 def scheduler_test():
     client = MongoClient(os.environ['MONGODB_URI'])
     record = {
-        "Test": "Test"
+        "Test": "HerokuTest"
     }
     client.HousingRent.Test.insert_one(record)
 
