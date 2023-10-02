@@ -4,12 +4,19 @@ import os
 from flask import Flask, request
 from apscheduler.schedulers.background import BackgroundScheduler
 from Scrapper import Scrapper
+from pymongo import MongoClient
 from AnnouncementService import AnnouncementService
 
 app = Flask(__name__)
+def scheduler_test():
+    client = MongoClient(os.environ['MONGODB_URI'])
+    record = {
+        "Test": "Test"
+    }
+    client.HousingRent.Test.insert_one(record)
 
-scheduler = BackgroundScheduler(daemon=False)
-scheduler.add_job(func=Scrapper.collect_data, trigger='interval', hours=24)
+scheduler = BackgroundScheduler(daemon=True)
+scheduler.add_job(func=scheduler_test, trigger='interval', minutes=2)
 scheduler.start()
 
 @app.route('/', methods=['GET'])
