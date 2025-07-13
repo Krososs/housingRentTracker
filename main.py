@@ -1,26 +1,40 @@
 import logging
 import threading
-import os
-import datetime
+import sys
 
 from flask import Flask, request
 from apscheduler.schedulers.background import BackgroundScheduler
 from Scrapper import Scrapper
-from pymongo import MongoClient
 from AnnouncementService import AnnouncementService
+from Utils.Database import Database
 
-app = Flask(__name__)
-# def scheduler_test():
-#     client = MongoClient(os.environ['MONGODB_URI'])
-#     record = {
-#         "Test": "HerokuTest"
-#     }
-#     client.HousingRent.Test.insert_one(record)
+logging.basicConfig(
+    level=logging.INFO
+)
 
-# scheduler = BackgroundScheduler(daemon=True)
-# scheduler.add_job(func=scheduler_test, trigger='interval', minutes=2)
-# scheduler.start()
-# scheduler.
+scheduler = BackgroundScheduler(daemon=True)
+
+
+def run_scheduler():
+    scheduler.add_job(func=Database.inset_test_record, trigger='interval', minutes=1)
+    scheduler.start()
+
+def on_run():
+    logging.info("APP STARTING")
+    if not Database.connected():
+        logging.info("APP CLOSING ON ERROR")
+        sys.exit(1)
+    Database.prepare_collections()
+    run_scheduler()
+
+class FlaskApp(Flask):
+  def run(self, host=None, port=None, debug=None, load_dotenv=True, **options):
+    if not self.debug:
+      with self.app_context():
+        on_run()
+    super(FlaskApp, self).run(host=host, port=port, debug=debug, load_dotenv=load_dotenv, **options)
+
+app = FlaskApp(__name__)
 
 @app.route('/', methods=['GET'])
 def hello():
@@ -38,5 +52,5 @@ def get_announcements():
     return AnnouncementService.get_announcements(request.get_json())
 
 if __name__ == '__main__':
-    app.logger.setLevel(logging.INFO)
     app.run()
+
