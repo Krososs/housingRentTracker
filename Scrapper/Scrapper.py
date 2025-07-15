@@ -62,7 +62,13 @@ def trojmiasto_pl_collect_data_for_city(city):
                 rooms = int(''.join([c for c in rooms_data if c.isdigit()]))
             except:
                 rooms = None
+            try:
+                district = data.find_next('p', {
+                    'class': 'list__item__content__subtitle'}).text.strip()
+            except:
+                district = None
             offer = {
+                'District': district,
                 'Price': price,
                 'Surface': surface,
                 'Rooms': rooms
